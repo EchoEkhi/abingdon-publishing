@@ -13,8 +13,10 @@
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mitt": "^3.0.0",
+    "pdfjs-dist": "^2.13.216",
     "pinia": "^2.0.13",
     "vue": "^3.2.25",
+    "vue-pdf-embed": "^1.1.1",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {

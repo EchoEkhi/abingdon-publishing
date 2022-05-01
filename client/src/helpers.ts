@@ -11,7 +11,7 @@ const api = axios.create({
 api.interceptors.response.use(res => {
     return res
 }, err => {
-    if (!err || !err.response) return
+    if (err.response === undefined) return err
     if (err.response.status == 401) {
         Cookies.remove('auth', {
             expires: 1,

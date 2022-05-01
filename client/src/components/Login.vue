@@ -42,6 +42,9 @@ export default defineComponent({
             })
         }
     },
+    created() {
+        if (Cookies.get('auth') !== undefined) this.$router.push('/manage')
+    }
 })
 </script>
 
