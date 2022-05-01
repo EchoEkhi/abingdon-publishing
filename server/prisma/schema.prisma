@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model article {
+  id             Int      @id @default(autoincrement())
+  title          String
+  author         String?
+  publisher      String?
+  description    String?
+  published_date DateTime
+  thumbnail      Bytes?
+  user_id        Int?
+  clicks         Int      @default(0)
+  hidden         Boolean? @default(false)
+  file_id        Int?
+  page           Int?
+  file           file?    @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user           user?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user {
+  id           Int       @id @default(autoincrement())
+  name         String    @unique(map: "sqlite_autoindex_user_1")
+  publisher    String
+  access_token String
+  is_admin     Boolean   @default(false)
+  article      article[]
+  file         file[]
+}
+
+model file {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique(map: "sqlite_autoindex_file_1")
+  path    String    @unique(map: "sqlite_autoindex_file_2")
+  user_id Int
+  file    Bytes?
+  user    user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  article article[]
+}

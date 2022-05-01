@@ -1,0 +1,72 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #111111;
+    margin-top: 60px;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
+.container {
+    box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.container.small {
+    width: min(100% - 2rem, 500px);
+    margin-inline: auto;
+}
+
+.container.error {
+    outline: red dashed 2px;
+}
+
+.container.no-p {
+    padding: 0
+}
+
+.message {
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+    border: transparent solid 2px;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: fit-content;
+    margin-inline: auto;
+}
+
+.message.error::before {
+    content: '⛔ ';
+    text-decoration: none;
+}
+
+input,
+textarea,
+button,
+select {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 0.5rem;
+}
+
+input:disabled {
+    box-shadow: inset 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+    resize: none;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+}

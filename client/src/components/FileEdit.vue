@@ -1,0 +1,73 @@
+<template>
+    <div class="container flex">
+        <select v-model="file">
+            <option :value="newFile">Upload new file</option>
+            <option v-for="file in files" :value="file">{{ file.name }}</option>
+        </select>
+        <input type="text" v-model="file.name">
+        <input type="text" disabled
+            :value="file.name ? 'Link: ' + file.name.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.pdf' : ''">
+
+        <input type="file" ref="file">
+        <button @click="submit">Save</button>
+    </div>
+</template>
+
+<script lang="ts">
+import { storeToRefs } from 'pinia'
+import { defineComponent } from 'vue'
+import api from '../helpers'
+import { useFiles, File } from '../store'
+
+export default defineComponent({
+    setup() {
+        let { files, newFile } = storeToRefs(useFiles())
+        return { files, newFile }
+    },
+    data() {
+        return {
+            file: {} as File
+        }
+    },
+    methods: {
+        async submit() {
+            // @ts-ignore
+            let { id } = await useFiles().submitFile(this.file)
+
+            if (id === undefined) id = this.file.id
+            else this.file = this.files.find((file) => file.id === id) || this.file
+            // @ts-ignore There does not seem to be a way to safely read files...
+            const file = this.$refs.file.files[0]
+
+            if (file === undefined) return
+
+            let formData = new FormData()
+            formData.append('file', file)
+            await api.post('file/upload/' + id, formData)
+        }
+    },
+    created() {
+        useFiles().fetchFiles().then(() => this.file = this.newFile)
+    }
+})
+</script>
+
+<style scoped>
+.flex {
+    flex-direction: column;
+}
+
+.container {
+    text-align: left;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+button {
+    width: 4rem;
+}
+</style>
