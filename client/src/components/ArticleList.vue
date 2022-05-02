@@ -1,7 +1,7 @@
 <template>
     <div class="container no-p">
 
-        <ArticleItem :article="newArticle" />
+        <ArticleItem :article="newArticle" default />
         <div v-for="article in articles" :key="article.id">
             <ArticleItem :article="article" />
         </div>

@@ -14,7 +14,11 @@ import { emitter, Article } from '../store'
 
 export default defineComponent({
     props: {
-        article: {}
+        article: {},
+        default: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -34,6 +38,7 @@ export default defineComponent({
         emitter.on("selectArticle", () => {
             this.selected = false
         })
+        this.selected = this.default
     }
 })
 </script>

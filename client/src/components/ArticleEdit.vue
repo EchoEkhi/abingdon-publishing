@@ -7,6 +7,7 @@
         <textarea type="text" id="description" placeholder="Article description" v-model="article.description" />
         <div class="flex">
             <select v-model="file">
+                <option :value="{}" disabled selected hidden>Select File</option>
                 <option v-for="file in files" :value="file">{{ file.name }}</option>
             </select>
             <input type="number" min="1" placeholder="Page number" v-model="article.page">
