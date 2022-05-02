@@ -31,7 +31,7 @@ function getPublisher() {
 export const useArticles = defineStore('articles', {
     state: () => ({
         articles: [] as Article[],
-        newArticle: { id: -1, publisher: getPublisher() } as Article
+        newArticle: { id: -1, title: 'Create New Article', publisher: getPublisher() } as Article
     }),
     actions: {
         async fetchArticles() {
@@ -47,12 +47,13 @@ export const useArticles = defineStore('articles', {
             await api.post('article/create', article).then(res => {
                 let article = res.data
                 this.articles.unshift(res.data)
-                this.newArticle = {
-                    id: -1,
-                    publisher: getPublisher(),
-                    file_id: article.file_id,
-                    page: article.page + 1
-                } as Article
+                this.newArticle.id = -1
+                this.newArticle.publisher = getPublisher()
+                this.newArticle.file_id = article.file_id
+                this.newArticle.page = article.page + 1
+                this.newArticle.title = 'Create New Article'
+                this.newArticle.author = ''
+                this.newArticle.description = ''
             })
             return this.newArticle
         },
@@ -87,7 +88,7 @@ export const useFiles = defineStore('files', {
         },
         async createFile(file: File) {
             return await api.post('file/create', file).then(res => {
-                this.files.unshift(res.data)
+                this.files?.unshift(res.data)
                 this.newFile = { id: -1 } as File
                 return res.data
             })

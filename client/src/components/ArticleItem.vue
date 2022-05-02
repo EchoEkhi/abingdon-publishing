@@ -1,5 +1,5 @@
 <template>
-    <div class="article" @click="selectArticle">
+    <div class="article" @click="selectArticle" :class="{ selected }">
         <div class="breadcrumb">
             <span class="author">{{ article.author }} - </span><span class="publisher">{{ article.publisher }}</span>
         </div>
@@ -16,13 +16,24 @@ export default defineComponent({
     props: {
         article: {}
     },
+    data() {
+        return {
+            selected: false
+        }
+    },
     methods: {
         selectArticle() {
             emitter.emit('selectArticle', this.article)
+            this.selected = true
         }
     },
     setup(props) {
         return { article: props.article as Article }
+    },
+    mounted() {
+        emitter.on("selectArticle", () => {
+            this.selected = false
+        })
     }
 })
 </script>
@@ -37,6 +48,21 @@ export default defineComponent({
 
 .article:hover {
     background-color: lightgray;
+}
+
+.article.selected {
+    position: relative;
+}
+
+.article.selected::before {
+    content: "\A";
+    border-style: solid;
+    border-width: 10px 15px 10px 0;
+    border-color: transparent rgb(0, 90, 164) transparent transparent;
+    position: absolute;
+    left: 0;
+    top: 1.4rem;
+    transform: rotate(180deg) scale(0.5);
 }
 
 .article .breadcrumb {

@@ -22,21 +22,16 @@ export default defineComponent({
         }
     },
     mounted() {
-        let el = document.getElementById('article-smart-input')
-        window.addEventListener('mousemove', mousemove, false)
-
-        // @ts-ignore
-        function mousemove(e) {
-            el!.style.left = e.pageX + 30 + 'px'
-            el!.style.top = e.pageY - 90 + 'px'
-        }
-
+        window.addEventListener('mousemove', this.mousemove, false)
         document.addEventListener('selectionchange', this.select, false)
-
         document.addEventListener('mouseup', this.mouseup, false)
-
         document.addEventListener('contextmenu', event => event.preventDefault())
-
+    },
+    unmounted() {
+        window.removeEventListener('mousemove', this.mousemove)
+        document.removeEventListener('selectionchange', this.select)
+        document.removeEventListener('mouseup', this.mouseup)
+        document.removeEventListener('contextmenu', event => event.preventDefault())
     },
     methods: {
         select() {
@@ -64,13 +59,21 @@ export default defineComponent({
             }
         },
         // @ts-ignore
+        mousemove(e) {
+            let el = document.getElementById('article-smart-input')
+            el!.style.left = e.pageX + 30 + 'px'
+            el!.style.top = e.pageY - 90 + 'px'
+        },
+        // @ts-ignore
         mouseup(e) {
             if (e.button === 2) {
                 this.state = (this.state - 1) % 3
                 if (this.state < 0) this.state = 2
             }
             if (this.text !== '') this.nextState()
-            window.getSelection()?.removeAllRanges()
+            if (e?.target?.tagName !== 'INPUT' && e?.target?.tagName !== 'TEXTAREA') {
+                window.getSelection()?.removeAllRanges()
+            }
         },
         nextState() {
             this.state++

@@ -1,10 +1,7 @@
 <template>
     <div class="container no-p">
 
-        <ArticleItem :article="newArticle" v-if="newArticle.title" />
-        <div class="new-article" @click="selectNewArticle" v-else>
-            <p>New Article</p>
-        </div>
+        <ArticleItem :article="newArticle" />
         <div v-for="article in articles" :key="article.id">
             <ArticleItem :article="article" />
         </div>
@@ -21,11 +18,6 @@ export default defineComponent({
     setup() {
         let { articles, newArticle } = storeToRefs(useArticles())
         return { articles, newArticle };
-    },
-    methods: {
-        selectNewArticle() {
-            emitter.emit('selectArticle', this.newArticle)
-        }
     },
     components: { ArticleItem }
 })
