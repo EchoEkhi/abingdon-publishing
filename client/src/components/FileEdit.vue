@@ -9,7 +9,12 @@
             :value="file.name ? 'Link: ' + file.name.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.pdf' : ''">
 
         <input type="file" ref="file">
-        <button @click="submit">Save</button>
+        <button :disabled="file.name === '' || file.name === undefined" @click="submit">
+            <span v-if="status === 'standby'">{{ file.id === -1 ? 'Create' : 'Save' }} File</span>
+            <span v-else-if="status === 'waiting'">Saving File...</span>
+            <span v-else-if="status === 'success'">File Saved!</span>
+            <span v-else-if="status === 'error'">Failed!</span>
+        </button>
     </div>
 </template>
 
@@ -19,6 +24,8 @@ import { defineComponent } from 'vue'
 import api from '../helpers'
 import { useFiles, File } from '../store'
 
+type Status = 'standby' | 'waiting' | 'success' | 'error'
+
 export default defineComponent({
     setup() {
         let { files, newFile } = storeToRefs(useFiles())
@@ -26,13 +33,17 @@ export default defineComponent({
     },
     data() {
         return {
-            file: {} as File
+            file: {} as File,
+            status: "standby" as Status
         }
     },
     methods: {
         async submit() {
+            this.status = 'waiting'
             // @ts-ignore
             let { id } = await useFiles().submitFile(this.file)
+
+            this.status = 'success'
 
             if (id === undefined) id = this.file.id
             else this.file = this.files.find((file) => file.id === id) || this.file
@@ -44,6 +55,7 @@ export default defineComponent({
             let formData = new FormData()
             formData.append('file', file)
             await api.post('file/upload/' + id, formData)
+
         }
     },
     created() {
@@ -68,6 +80,6 @@ export default defineComponent({
 }
 
 button {
-    width: 4rem;
+    width: 8rem;
 }
 </style>

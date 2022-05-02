@@ -1,7 +1,9 @@
 <template>
     <div class="article" @click="selectArticle" :class="{ selected }">
         <div class="breadcrumb">
-            <span class="author">{{ article.author }} - </span><span class="publisher">{{ article.publisher }}</span>
+            <span class="author">{{ article.author }}</span>
+            <span v-if="article.author && article.publisher"> - </span>
+            <span class="publisher">{{ article.publisher }}</span>
         </div>
         <p class="title">{{ article.title }}</p>
         <p class="description">{{ article.description }}</p>
@@ -66,7 +68,7 @@ export default defineComponent({
     border-color: transparent rgb(0, 90, 164) transparent transparent;
     position: absolute;
     left: 0;
-    top: 1.4rem;
+    top: 1.5rem;
     transform: rotate(180deg) scale(0.5);
 }
 

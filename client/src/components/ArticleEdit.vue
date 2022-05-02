@@ -1,22 +1,23 @@
 <template>
     <div class="container">
-        <input type="text" id="title" placeholder="Article Title" v-model="article.title">
-        <input type="text" id="author" placeholder="Article Authors (Alan Bennings & Charles Doyle)"
+        <input type="text" id="title" class="primary" placeholder="Article Title" v-model="article.title">
+        <input type="text" id="author" class="primary" placeholder="Article Authors (Alan Bennings & Charles Doyle)"
             v-model="article.author">
-        <input type="text" id="publisher" placeholder="Article Publisher" v-model="article.publisher" />
-        <textarea type="text" id="description" placeholder="Article description" v-model="article.description" />
+        <input type="text" id="publisher" class="primary" placeholder="Article Publisher" v-model="article.publisher" />
+        <textarea type="text" id="description" class="primary" placeholder="Article description"
+            v-model="article.description" />
         <div class="flex">
             <select v-model="file">
                 <option :value="{}" disabled selected hidden>Select File</option>
                 <option v-for="file in files" :value="file">{{ file.name }}</option>
             </select>
-            <input type="number" min="1" placeholder="Page number" v-model="article.page">
+            <input type="number" min="1" :max="maxPage" placeholder="Page number" v-model="article.page">
             <button style="width: 2rem; margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;"
-                @click="() => { if (article.page > 1) article.page-- }">
+                :disabled="article.page <= 1" @click="() => { article.page-- }">
                 ◀
             </button>
             <button style="width: 2rem; margin-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0;"
-                @click="() => { article.page++ }">
+                :disabled="article.page >= maxPage" @click="() => { article.page++ }">
                 ▶
             </button>
             <button :disabled="article.title === ''" @click="submit">
@@ -28,7 +29,8 @@
         </div>
         <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${file.path}`"
             :page="article.page"
-            style="width: 40rem; box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2); margin-left: 0.5rem;" class="scroll" />
+            style="width: 40rem; box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2); margin-left: 0.5rem;" class="scroll"
+            ref="pdf" @rendered="rendered" />
         <ArticleSmartInput :article="article" @submit="submit" />
     </div>
 </template>
@@ -52,7 +54,8 @@ export default defineComponent({
         return {
             article: {} as Article,
             file: {} as File,
-            status: "standby" as Status
+            status: "standby" as Status,
+            maxPage: 1
         };
     },
     methods: {
@@ -64,13 +67,17 @@ export default defineComponent({
                     this.article = article
                 })
                 .catch(() => this.status = "error")
+        },
+        rendered() {
+            // @ts-ignore
+            this.maxPage = this.$refs.pdf.pageCount || 1
         }
     },
     mounted() {
         this.article = this.newArticle;
         emitter.on("selectArticle", article => {
             this.article = article
-            this.file = this.files.find(file => file.id === article.file_id) || {} as File
+            this.file = this.files?.find(file => file.id === article.file_id) || {} as File
         })
     },
     watch: {
@@ -106,12 +113,13 @@ button {
     width: 8rem;
 }
 
-input,
+input.primary,
 textarea {
     border: none;
     box-shadow: none;
     margin: 0;
     outline: none;
+    background: inherit;
 }
 
 input#title {

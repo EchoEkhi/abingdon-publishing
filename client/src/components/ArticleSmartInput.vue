@@ -1,7 +1,7 @@
 <template>
     <div style="position: absolute;" id="article-smart-input" class="tooltip">
         <p style="margin-bottom: 0.5rem">
-            Smart input is active. Right click to switch input field.
+            Smart input is active. Right click to redo last field.
         </p>
         <p>{{ ['Title', 'Author', 'Description'][state] }}: {{ text }}</p>
     </div>
@@ -89,10 +89,10 @@ export default defineComponent({
 <style scoped>
 .tooltip {
     padding: 0.5rem;
-    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
     background-color: white;
-    opacity: 0.9;
+    opacity: 0.7;
     overflow: hidden;
     width: 25rem;
 }
