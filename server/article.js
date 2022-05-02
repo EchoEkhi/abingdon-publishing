@@ -17,6 +17,7 @@ app.post('/create', async(req, res) => {
             description: article.description,
             file_id: article.file_id,
             page: article.page,
+            user_id: req.user.id,
             published_date: new Date().toISOString()
         }
     })
@@ -31,7 +32,7 @@ app.get('/read', async(req, res) => {
     let articles = await db.article.findMany({
         where: filter,
         orderBy: {
-            published_date: 'asc'
+            published_date: 'desc'
         }
     })
 

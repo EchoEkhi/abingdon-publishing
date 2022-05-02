@@ -45,8 +45,14 @@ export const useArticles = defineStore('articles', {
         },
         async createArticle(article: Article) {
             await api.post('article/create', article).then(res => {
+                let article = res.data
                 this.articles.unshift(res.data)
-                this.newArticle = { id: -1, publisher: getPublisher() } as Article
+                this.newArticle = {
+                    id: -1,
+                    publisher: getPublisher(),
+                    file_id: article.file_id,
+                    page: article.page + 1
+                } as Article
             })
             return this.newArticle
         },
