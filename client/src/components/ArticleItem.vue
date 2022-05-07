@@ -75,7 +75,7 @@ export default defineComponent({
 .article .breadcrumb {
     padding-top: 0.5rem;
     font-size: 0.6rem;
-    opacity: 0.8;
+    color: #888;
 }
 
 .article .publisher {

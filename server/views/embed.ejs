@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<main>
+    <div class="header">
+        <h3>Abingdon Publications</h3>
+    </div>
+    <% for (let article of articles) { %>
+    <div class="article">
+        <p class="breadcrumb">
+            <span class="author">
+                <%= article.author %>
+            </span>
+            <%= (article.author && article.publisher) ? ' - ' : '' %>
+            <span class="publisher">
+                <%= article.publisher %>
+            </span>
+        </p>
+        <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank" class="title">
+            <%= article.title %>
+        </a>
+        <p class="description">
+            <%= article.description %>
+        </p>
+    </div>
+    <% } %>
+</main>
+
+<style>
+    @font-face {
+        font-family: 'Lato';
+        src: url(/assets/Lato.woff2);
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url(/assets/Lato-black.woff2);
+        font-weight: bold;
+    }
+
+    html {
+        font-family: 'Lato', sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background-color: white;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+    }
+
+    h3 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .header h3 {
+        padding: 0.625rem 1rem;
+        font-size: 1.125rem;
+        line-height: 1.14rem;
+        font-weight: 600;
+    }
+
+    .header {
+        background-color: #e6e6e6;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #444;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #ccc;
+    }
+
+    .article {
+        display: inline-block;
+        text-align: left;
+        padding-inline: 1rem;
+        min-height: 6rem;
+        color: rgb(68, 68, 68);
+    }
+
+    .article p {
+        padding: 0;
+    }
+
+    .article .breadcrumb {
+        padding-top: 0.5rem;
+        font-size: 0.6rem;
+        color: #888;
+    }
+
+    .article .publisher {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        margin-bottom: 0;
+    }
+
+    .article .title {
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0;
+        color: rgb(0, 90, 164);
+        text-decoration: none;
+    }
+
+    .article .title:hover {
+        text-decoration: underline;
+    }
+
+    .article .description {
+        margin-top: 0.2rem;
+        font-size: 0.8rem;
+        height: 2.8rem;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 0;
+    }
+</style>

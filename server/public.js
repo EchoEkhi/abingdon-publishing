@@ -1,7 +1,7 @@
 const db = require('./db')
 const app = require('express')()
 
-app.get('/file/:path', async(req, res) => {
+app.get('/file/:path', async (req, res) => {
 
     const file = await db.file.findUnique({
         select: {
@@ -20,6 +20,30 @@ app.get('/file/:path', async(req, res) => {
         .setHeader('Access-Control-Allow-Origin', '*')
         .send(Buffer.from(file.file))
 
+})
+
+//setting view engine to ejs
+app.set("view engine", "ejs")
+
+app.get('/embed', async (req, res) => {
+
+    const articles = await db.article.findMany({
+        take: 3,
+        select: {
+            title: true,
+            author: true,
+            publisher: true,
+            description: true,
+            page: true,
+            file: {
+                select: {
+                    path: true
+                }
+            }
+        }
+    })
+
+    res.render('embed', { articles })
 })
 
 module.exports = app

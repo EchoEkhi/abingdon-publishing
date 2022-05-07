@@ -127,7 +127,7 @@ input#title {
 }
 
 textarea#description {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     min-height: 3em;
 }
 </style>

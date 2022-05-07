@@ -4,6 +4,7 @@
         <ArticleEdit class="right" />
     </div>
     <FileEdit />
+    <PreviewFrame />
 </template>
 
 <script lang="ts">
@@ -12,6 +13,7 @@ import { useArticles } from '../store'
 import ArticleList from '../components/ArticleList.vue'
 import ArticleEdit from '../components/ArticleEdit.vue';
 import FileEdit from '../components/FileEdit.vue';
+import PreviewFrame from '../components/PreviewFrame.vue';
 
 export default defineComponent({
     async created() {
@@ -20,7 +22,7 @@ export default defineComponent({
     setup() {
         return {};
     },
-    components: { ArticleList, ArticleEdit, FileEdit }
+    components: { ArticleList, ArticleEdit, FileEdit, PreviewFrame }
 })
 </script>
 

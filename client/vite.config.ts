@@ -8,6 +8,9 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:3001'
+      },
+      '/assets': {
+        target: 'http://localhost:3001'
       }
     }
   }
