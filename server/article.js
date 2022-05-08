@@ -2,7 +2,7 @@ const db = require('./db')
 
 const app = require('express')()
 
-app.post('/create', async(req, res) => {
+app.post('/create', async (req, res) => {
     let article = req.body
 
     // check for required attributes
@@ -25,12 +25,15 @@ app.post('/create', async(req, res) => {
     res.status(200).send(article)
 })
 
-app.get('/read', async(req, res) => {
+app.get('/read', async (req, res) => {
     let filter = {}
     if (!req.user.isAdmin) filter = { user_id: req.user.id }
 
     let articles = await db.article.findMany({
-        where: filter,
+        where: {
+            hidden: false,
+            ...filter
+        },
         orderBy: {
             published_date: 'desc'
         }
@@ -39,10 +42,10 @@ app.get('/read', async(req, res) => {
     return res.send(articles)
 })
 
-app.post('/update/:id', async(req, res) => {
+app.post('/update/:id', async (req, res) => {
     let id = parseInt(req.params.id)
 
-    if (typeof(id) !== 'number') {
+    if (typeof (id) !== 'number') {
         return res.status(400).send()
     }
 
@@ -74,18 +77,23 @@ app.post('/update/:id', async(req, res) => {
     res.status(200).send()
 })
 
-app.post('/hide', async(req, res) => {
+app.post('/hide', async (req, res) => {
     try {
+        if (req.body.ids.length === 0) return res.status(400).send()
+
         let filter = {}
         if (!req.user.isAdmin) filter = { user_id: req.user.id }
 
-        await db.article.update({
+        await db.article.updateMany({
             where: {
-                id: req.body.ids,
+                id: {
+                    in: req.body.ids
+                },
                 ...filter
             },
             data: {
-                hidden: true
+                hidden: true,
+                hide_session: Math.random().toString().substring(2, 8)
             }
         })
 
@@ -95,5 +103,22 @@ app.post('/hide', async(req, res) => {
     }
 })
 
+app.get('/undo-hide/:session', async (req, res) => {
+    try {
+        await db.article.updateMany({
+            where: {
+                hide_session: req.params.session
+            },
+            data: {
+                hidden: false,
+                hide_session: ''
+            }
+        })
+
+        res.status(200).send('Undo success.')
+    } catch {
+        res.status(400).send('Undo failed.')
+    }
+})
 
 module.exports = app

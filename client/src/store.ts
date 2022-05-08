@@ -11,7 +11,8 @@ export type Article = {
     description: string,
     publisher: string,
     file_id: number,
-    page: number
+    page: number,
+    selected: boolean | undefined
 }
 
 type Events = {
@@ -31,7 +32,8 @@ function getPublisher() {
 export const useArticles = defineStore('articles', {
     state: () => ({
         articles: [] as Article[],
-        newArticle: { id: -1, title: 'Create New Article', publisher: getPublisher() } as Article
+        newArticle: { id: -1, title: 'Create New Article', publisher: getPublisher() } as Article,
+        selectMode: false
     }),
     actions: {
         async fetchArticles() {

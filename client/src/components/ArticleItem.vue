@@ -1,18 +1,26 @@
 <template>
-    <div class="article" @click="selectArticle" :class="{ selected }">
-        <div class="breadcrumb">
-            <span class="author">{{ article.author }}</span>
-            <span v-if="article.author && article.publisher"> - </span>
-            <span class="publisher">{{ article.publisher }}</span>
+    <div class="article" :class="{ selected }">
+        <div @click="selectArticle">
+            <div class="breadcrumb">
+                <span class="author">{{ article.author }}</span>
+                <span v-if="article.author && article.publisher"> - </span>
+                <span class="publisher">{{ article.publisher }}</span>
+            </div>
+            <p class="title">{{ article.title }}</p>
+            <p class="description">{{ article.description }}</p>
         </div>
-        <p class="title">{{ article.title }}</p>
-        <p class="description">{{ article.description }}</p>
+        <transition>
+            <div v-show="showCheckbox" class="tickbox">
+                <input type="checkbox" v-model="article.selected">
+            </div>
+        </transition>
     </div>
 </template>
 
 <script lang="ts">
+import { storeToRefs } from 'pinia'
 import { defineComponent } from 'vue'
-import { emitter, Article } from '../store'
+import { emitter, Article, useArticles } from '../store'
 
 export default defineComponent({
     props: {
@@ -34,13 +42,19 @@ export default defineComponent({
         }
     },
     setup(props) {
-        return { article: props.article as Article }
+        let { selectMode } = storeToRefs(useArticles())
+        return { article: props.article as Article, selectMode, default: props.default }
     },
     mounted() {
         emitter.on("selectArticle", () => {
             this.selected = false
         })
         this.selected = this.default
+    },
+    computed: {
+        showCheckbox() {
+            return this.selectMode && !this.default
+        }
     }
 })
 </script>
@@ -51,6 +65,7 @@ export default defineComponent({
     padding-inline: 1rem;
     min-height: 6rem;
     cursor: pointer;
+    position: relative;
 }
 
 .article:hover {
@@ -99,5 +114,23 @@ export default defineComponent({
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 0;
+}
+
+.tickbox {
+    position: absolute;
+    height: 100%;
+    width: 6rem;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    background: linear-gradient(90deg, #11111100 0%, #555555FF 100%);
+}
+
+.tickbox input {
+    width: 1.5rem;
+    height: 1.5rem;
+    align-self: center;
+    margin: auto;
 }
 </style>

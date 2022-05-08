@@ -33,10 +33,10 @@ export default defineComponent({
 }
 
 .left {
-    flex: 1
+    flex: 2
 }
 
 .right {
-    flex: 3
+    flex: 5
 }
 </style>
