@@ -40,6 +40,10 @@ app.get('/embed', async (req, res) => {
                     path: true
                 }
             }
+        },
+        where: {
+            showing: true,
+            hidden: false
         }
     })
 

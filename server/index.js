@@ -2,7 +2,11 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const cron = require('cron')
 const db = require('./db')
+
+// run every weekday at 20 seconds past midnight
+new cron.CronJob('20 0 0 * * 1-5', require('./helpers').newRecommendations, null, true)
 
 const app = express()
 
