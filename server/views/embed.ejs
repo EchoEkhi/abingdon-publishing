@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <main>
     <div class="header">
-        <h3>Abingdon Publications</h3>
+        <h3 class="nowrap">Abingdon Publications</h3>
     </div>
     <% for (let article of articles) { %>
     <div class="article">
-        <p class="breadcrumb">
+        <p class="breadcrumb nowrap">
             <span class="author">
                 <%= article.author %>
             </span>
@@ -14,7 +14,8 @@
                 <%= article.publisher %>
             </span>
         </p>
-        <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank" class="title">
+        <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank"
+            class="title nowrap">
             <%= article.title %>
         </a>
         <p class="description">
@@ -46,6 +47,7 @@
         border-width: 1px;
         border-color: #ccc;
         border-style: solid;
+        overflow: hidden;
     }
 
     h3 {
@@ -74,7 +76,7 @@
     }
 
     .article {
-        display: inline-block;
+        display: block;
         text-align: left;
         padding-inline: 1rem;
         min-height: 6rem;
@@ -89,6 +91,7 @@
         padding-top: 0.5rem;
         font-size: 0.6rem;
         color: #888;
+        overflow: hidden;
     }
 
     .article .publisher {
@@ -117,5 +120,13 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         margin-bottom: 0;
+    }
+
+    .nowrap {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
     }
 </style>
