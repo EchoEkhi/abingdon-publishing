@@ -14,11 +14,7 @@ app.get('/file/:path', async (req, res) => {
 
     if (file === null) return res.status(400).send()
 
-    res.status(200)
-        .setHeader('content-type', 'application/pdf')
-        .setHeader('Cache-Control', 'public, max-age=86400')
-        .setHeader('Access-Control-Allow-Origin', '*')
-        .send(Buffer.from(file.file))
+    res.status(200).send(Buffer.from(file.file))
 
 })
 

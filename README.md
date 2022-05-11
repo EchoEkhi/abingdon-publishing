@@ -15,9 +15,13 @@ Install dependencies
 - `cd server && npm i`
 
 Setup dev environment
+- Rename `abs_pub.example.db` to `abs_pub.dev.db` and use SQLite Studio to inspect and modify rows
 - Edit server/.env_example and follow instructions within
+- `cd server && cp .env_example .env`
 - `cd server && npx nodemon`
 - `cd client && npm run dev`
 
 Build for production
-- TODO
+- `cd client && npm run build`
+- `mv client/dist/* server/public/ -r`
+- Upload your own version of `abs_pub.prod.db` with predefined users. Don't forget to back up when overwriting files!
