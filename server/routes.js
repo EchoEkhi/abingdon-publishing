@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const cache = require('apicache').middleware
 
 const app = express()
 
@@ -23,10 +24,8 @@ function checkAuth(req, res, next) {
 }
 
 app.use('/login', require('./user'))
-
 app.use('/article', checkAuth, require('./article'))
 app.use('/file', checkAuth, require('./file'))
-app.use('/public', require('./public'))
-
+app.use('/public', cache('6 hours'), require('./public'))
 
 module.exports = app

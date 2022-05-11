@@ -48,6 +48,7 @@ app.get('/embed', async (req, res) => {
     })
 
     res.render('embed', { articles })
+
 })
 
 module.exports = app

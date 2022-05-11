@@ -10,7 +10,7 @@ A widget to be put onto the side of Firefly Learning Platform. Provides descript
 
 ## Setup and Install
 
-Install dependancies
+Install dependencies
 - `cd client && npm i`
 - `cd server && npm i`
 
