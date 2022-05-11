@@ -1,6 +1,7 @@
 <template>
     <div class="container" style="width: 22%; margin: auto; padding: 0; border-radius: 0;">
-        <iframe src="/api/public/embed" frameborder="0" height="330" style="width: 100%;"></iframe>
+        <iframe src="/api/public/embed" frameborder="0" height="330" style="width: 100%;"
+            onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight + 2 +"px";}(this));' />
     </div>
 </template>
 

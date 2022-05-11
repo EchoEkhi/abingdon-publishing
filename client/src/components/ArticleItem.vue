@@ -10,7 +10,7 @@
             <p class="description">{{ article.description }}</p>
         </div>
         <transition>
-            <div v-show="showCheckbox" class="tickbox">
+            <div v-show="showCheckbox" class="tickbox" @click="article.selected = !article.selected">
                 <input type="checkbox" v-model="article.selected">
             </div>
         </transition>

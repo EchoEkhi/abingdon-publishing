@@ -88,3 +88,14 @@ textarea {
     resize: none;
     font-family: 'Lato', sans-serif;
 }
+
+button:hover,
+select:hover,
+input:hover {
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:active,
+select:active {
+    box-shadow: inset 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
