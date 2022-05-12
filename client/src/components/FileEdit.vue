@@ -4,7 +4,7 @@
             <option :value="newFile">Upload new file</option>
             <option v-for="file in files" :value="file">{{ file.name }}</option>
         </select>
-        <input type="text" placeholder="File name" v-model="file.name">
+        <input type="text" placeholder="File name e.g. The Martlet Issue 29" v-model="file.name">
         <input type="text" placeholder="File link" disabled
             :value="file.name ? 'Link: ' + file.name.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.pdf' : ''">
 

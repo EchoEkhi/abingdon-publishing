@@ -5,6 +5,7 @@ const cors = require('cors')
 const cron = require('cron')
 const db = require('./db')
 const log = require('./logger')
+const cache = require('apicache').middleware
 
 // run every weekday at 20 seconds past midnight
 new cron.CronJob('20 0 0 * * 1-5', require('./helpers').newRecommendations, null, true)
@@ -13,7 +14,7 @@ const app = express()
 
 db.$connect()
 
-app.use('/assets', express.static('assets'))
+app.use('/assets', cache('24 hours'), express.static('assets'))
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())

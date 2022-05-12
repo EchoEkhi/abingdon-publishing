@@ -26,7 +26,7 @@ app.post('/create', async (req, res) => {
 
     res.status(200).send(file)
 
-    log.info(`[file/create] ${req.user.name} created ${file.name}`)
+    log.info(`[file/create] ${req.user.publisher} created ${file.name}`)
 
 })
 
@@ -48,7 +48,7 @@ app.get('/read', async (req, res) => {
 
     res.send(file)
 
-    log.info(`[file/read] ${req.user.name} read file list`)
+    log.info(`[file/read] ${req.user.publisher} read file list`)
 
 })
 
@@ -85,7 +85,7 @@ app.post('/update/:id', async (req, res) => {
 
     res.status(200).send()
 
-    log.info(`[file/update] ${req.user.name} updated ${file.name}`)
+    log.info(`[file/update] ${req.user.publisher} updated ${file.name}`)
 
 })
 
@@ -108,7 +108,7 @@ app.post('/upload/:id', fileUpload(), async (req, res) => {
 
     res.status(200).send()
 
-    log.info(`[file/upload] ${req.user.name} uploaded ${req.params.id}`)
+    log.info(`[file/upload] ${req.user.publisher} uploaded ${req.params.id}`)
 
 })
 
