@@ -52,4 +52,38 @@ app.get('/embed', async (req, res) => {
 
 })
 
+app.get('/publisher/:name', async (req, res) => {
+
+    if (req.params.name === undefined) return res.status(400).send()
+
+    const publisher = await db.user.findUnique({
+        select: {
+            id: true
+        },
+        where: {
+            name: req.params.name
+        }
+    })
+
+    if (publisher === null) return res.status(400).send()
+
+    const file = await db.file.findMany({
+        select: {
+            path: true
+        },
+        where: {
+            user_id: publisher.id
+        },
+        orderBy: {
+            id: 'desc'
+        },
+        take: 1
+    })
+
+    if (file === null || file[0].path === null) return res.status(400).send()
+
+    res.redirect(`/api/public/file/${file[0].path}`)
+
+})
+
 module.exports = app
