@@ -5,7 +5,7 @@
     </div>
     <% for (let article of articles) { %>
     <div class="article">
-        <p class="breadcrumb nowrap">
+        <p class="breadcrumb">
             <span class="author">
                 <%= article.author %>
             </span>
@@ -14,8 +14,7 @@
                 <%= article.publisher %>
             </span>
         </p>
-        <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank"
-            class="title nowrap">
+        <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank" class="title">
             <%= article.title %>
         </a>
         <p class="description">
@@ -79,7 +78,8 @@
         display: block;
         text-align: left;
         padding-inline: 1rem;
-        min-height: 6rem;
+        height: 6rem;
+        overflow: hidden;
         color: rgb(68, 68, 68);
     }
 
@@ -120,13 +120,5 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         margin-bottom: 0;
-    }
-
-    .nowrap {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        max-width: 100%;
     }
 </style>
