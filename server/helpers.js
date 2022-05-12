@@ -1,4 +1,5 @@
 const db = require("./db")
+const log = require('./logger')
 
 async function newRecommendations() {
 
@@ -42,6 +43,8 @@ async function newRecommendations() {
             }
         }
     })
+
+    log.info('[helpers] new recommendations created.')
 
 }
 

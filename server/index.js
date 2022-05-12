@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const cron = require('cron')
 const db = require('./db')
+const log = require('./logger')
 
 // run every weekday at 20 seconds past midnight
 new cron.CronJob('20 0 0 * * 1-5', require('./helpers').newRecommendations, null, true)
@@ -33,4 +34,4 @@ if (process.env.MODE === 'production') {
 
 }
 
-app.listen(process.env.PORT, () => console.log('Server running'))
+app.listen(process.env.PORT, () => log.warn('Server running'))

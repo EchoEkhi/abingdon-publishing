@@ -1,4 +1,5 @@
 const db = require('./db')
+const log = require('./logger')
 const app = require('express')()
 
 app.get('/file/:path', async (req, res) => {
@@ -18,6 +19,8 @@ app.get('/file/:path', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*')
 
     res.status(200).send(Buffer.from(file.file))
+
+    log.info(`[public/file] ${req.params.path} accessed`)
 
 })
 
@@ -49,6 +52,8 @@ app.get('/embed', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
 
     res.render('embed', { articles })
+
+    log.info(`[public/embed] embed accessed`)
 
 })
 
@@ -83,6 +88,8 @@ app.get('/publisher/:name', async (req, res) => {
     if (file === null || file[0].path === null) return res.status(400).send()
 
     res.redirect(`/api/public/file/${file[0].path}`)
+
+    log.info(`[public/publisher] ${req.params.name} accessed`)
 
 })
 

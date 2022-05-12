@@ -1,8 +1,9 @@
 const db = require('./db')
 const fileUpload = require('express-fileupload')
+const log = require('./logger')
 const app = require('express')()
 
-app.post('/create', async(req, res) => {
+app.post('/create', async (req, res) => {
     let file = req.body
 
     // check for required attributes
@@ -24,9 +25,12 @@ app.post('/create', async(req, res) => {
     }
 
     res.status(200).send(file)
+
+    log.info(`[file/create] ${req.user.name} created ${file.name}`)
+
 })
 
-app.get('/read', async(req, res) => {
+app.get('/read', async (req, res) => {
     let filter = {}
     if (!req.user.isAdmin) filter = { user_id: req.user.id }
 
@@ -42,13 +46,16 @@ app.get('/read', async(req, res) => {
         }
     })
 
-    return res.send(file)
+    res.send(file)
+
+    log.info(`[file/read] ${req.user.name} read file list`)
+
 })
 
-app.post('/update/:id', async(req, res) => {
+app.post('/update/:id', async (req, res) => {
     let id = parseInt(req.params.id)
 
-    if (typeof(id) !== 'number') {
+    if (typeof (id) !== 'number') {
         return res.status(400).send()
     }
 
@@ -77,13 +84,16 @@ app.post('/update/:id', async(req, res) => {
     }).catch(err => res.status(400).send())
 
     res.status(200).send()
+
+    log.info(`[file/update] ${req.user.name} updated ${file.name}`)
+
 })
 
-app.post('/upload/:id', fileUpload(), async(req, res) => {
+app.post('/upload/:id', fileUpload(), async (req, res) => {
 
     let id = parseInt(req.params.id)
 
-    if (typeof(id) !== 'number') {
+    if (typeof (id) !== 'number') {
         return res.status(400).send()
     }
 
@@ -97,6 +107,8 @@ app.post('/upload/:id', fileUpload(), async(req, res) => {
     }).catch(err => res.status(400).send())
 
     res.status(200).send()
+
+    log.info(`[file/upload] ${req.user.name} uploaded ${req.params.id}`)
 
 })
 

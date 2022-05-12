@@ -1,4 +1,5 @@
 const db = require('./db')
+const log = require('./logger')
 
 const app = require('express')()
 
@@ -23,6 +24,9 @@ app.post('/create', async (req, res) => {
     })
 
     res.status(200).send(article)
+
+    log.info(`[article/create] ${req.user.name} created ${article.title}`)
+
 })
 
 app.get('/read', async (req, res) => {
@@ -39,7 +43,10 @@ app.get('/read', async (req, res) => {
         }
     })
 
-    return res.send(articles)
+    res.send(articles)
+
+    log.info(`[article/read] ${req.user.name} read article list`)
+
 })
 
 app.post('/update/:id', async (req, res) => {
@@ -75,6 +82,9 @@ app.post('/update/:id', async (req, res) => {
     }).catch(() => res.status(400).send())
 
     res.status(200).send()
+
+    log.info(`[article/update] ${req.user.name} updated ${new_article.title}`)
+
 })
 
 app.post('/hide', async (req, res) => {
@@ -83,6 +93,8 @@ app.post('/hide', async (req, res) => {
 
         let filter = {}
         if (!req.user.isAdmin) filter = { user_id: req.user.id }
+
+        let hide_session = Math.random().toString().substring(2, 8)
 
         await db.article.updateMany({
             where: {
@@ -93,11 +105,14 @@ app.post('/hide', async (req, res) => {
             },
             data: {
                 hidden: true,
-                hide_session: Math.random().toString().substring(2, 8)
+                hide_session
             }
         })
 
         res.status(200).send()
+
+        log.info(`[article/hide] ${req.user.name} hid ${req.body.ids} in session ${hide_session}`)
+
     } catch {
         res.status(400).send()
     }
@@ -116,6 +131,9 @@ app.get('/undo-hide/:session', async (req, res) => {
         })
 
         res.status(200).send('Undo success.')
+
+        log.info(`[article/undo_hide] ${req.user.name} undid hide session ${req.params.session}`)
+
     } catch {
         res.status(400).send('Undo failed.')
     }
