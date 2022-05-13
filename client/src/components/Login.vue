@@ -36,7 +36,9 @@ export default defineComponent({
                     expires: 1,
                     sameSite: 'Strict'
                 })
-                this.$router.push('/manage')
+
+                // @ts-ignore
+                window.location = '/manage'
             }).catch(() => {
                 this.error = true
             })
