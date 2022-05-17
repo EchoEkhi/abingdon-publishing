@@ -14,18 +14,7 @@ async function newRecommendations() {
     })
 
     // find articles that should be shown, show not exposed articles first
-    let ids = await db.article.findMany({
-        select: {
-            id: true
-        },
-        where: {
-            hidden: false
-        },
-        orderBy: {
-            exposures: 'asc'
-        },
-        take: 3
-    })
+    let ids = await db.$queryRaw`SELECT id FROM article WHERE hidden = false ORDER BY random() LIMIT 3`
 
     ids = ids.map(id => id.id)
 
