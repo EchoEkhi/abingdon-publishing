@@ -13,8 +13,8 @@ async function newRecommendations() {
         }
     })
 
-    // find articles that should be shown, show not exposed articles first
-    let ids = await db.$queryRaw`SELECT id FROM article WHERE hidden = false ORDER BY random() LIMIT 3`
+    // find articles that should be shown, show not exposed articles first, and randomly select 3
+    let ids = await db.$queryRaw`SELECT id FROM article WHERE hidden = false ORDER BY exposures ASC, random() LIMIT 3`
 
     ids = ids.map(id => id.id)
 
