@@ -23,7 +23,7 @@ function checkAuth(req, res, next) {
     })
 }
 
-app.get('/support-email', (req, res) => res.send(process.env.SUPPORT_EMAIL))
+app.get('/support-email', checkAuth, (req, res) => res.send(process.env.SUPPORT_EMAIL))
 app.use('/login', require('./user'))
 app.use('/article', checkAuth, require('./article'))
 app.use('/file', checkAuth, require('./file'))
