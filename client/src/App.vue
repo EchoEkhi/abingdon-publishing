@@ -5,6 +5,5 @@
   <router-view></router-view>
 </template>
 
-
-
-<style src="./style.css"/>
+<style src="./style.css">
+</style>
