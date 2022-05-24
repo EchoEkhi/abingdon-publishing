@@ -27,12 +27,14 @@ export default defineComponent({
         window.addEventListener('mousemove', this.mousemove, false)
         document.addEventListener('selectionchange', this.select, false)
         document.addEventListener('mousedown', this.mousedown)
+        document.addEventListener('mouseup', this.mouseup)
         document.addEventListener('contextmenu', event => event.preventDefault())
     },
     unmounted() {
         window.removeEventListener('mousemove', this.mousemove)
         document.removeEventListener('selectionchange', this.select)
         document.removeEventListener('mousedown', this.mousedown)
+        document.addEventListener('mouseup', this.mouseup)
         document.removeEventListener('contextmenu', event => event.preventDefault())
     },
     methods: {
@@ -72,8 +74,6 @@ export default defineComponent({
                 this.$emit('switchSmartInput', this.state)
             }
 
-            if (this.text !== '') this.nextState()
-
             if (e?.target?.tagName === 'INPUT' || e?.target?.tagName === 'TEXTAREA') {
                 switch (e?.target?.id) {
                     case 'title':
@@ -90,6 +90,9 @@ export default defineComponent({
             } else {
                 window.getSelection()?.removeAllRanges()
             }
+        },
+        mouseup() {
+            if (this.canSelect && this.text !== '') this.nextState()
         },
         // @ts-ignore
         mousemove(e) {
