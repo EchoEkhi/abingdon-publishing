@@ -74,6 +74,9 @@ export default defineComponent({
 
 .article.selected {
     position: relative;
+    outline-offset: -2px;
+    outline: 2px solid rgb(0, 90, 164);
+    border-radius: 1rem;
 }
 
 .article.selected::before {
