@@ -3,7 +3,8 @@
         <p style="margin-bottom: 0.5rem">
             Smart input is active. Right click to redo last field.
         </p>
-        <p>{{ ['Title', 'Author', 'Description'][state] }}: {{ text }}</p>
+        <p><b style="color: rgb(0, 90, 164)">{{ ['Title', 'Author', 'Description'][state] }}</b>:
+            {{ text }}</p>
     </div>
 </template>
 
@@ -18,23 +19,26 @@ export default defineComponent({
     data() {
         return {
             text: '',
-            state: 0
+            state: 0,
+            canSelect: false
         }
     },
     mounted() {
         window.addEventListener('mousemove', this.mousemove, false)
         document.addEventListener('selectionchange', this.select, false)
-        document.addEventListener('mouseup', this.mouseup, false)
+        document.addEventListener('mousedown', this.mousedown)
         document.addEventListener('contextmenu', event => event.preventDefault())
     },
     unmounted() {
         window.removeEventListener('mousemove', this.mousemove)
         document.removeEventListener('selectionchange', this.select)
-        document.removeEventListener('mouseup', this.mouseup)
+        document.removeEventListener('mousedown', this.mousedown)
         document.removeEventListener('contextmenu', event => event.preventDefault())
     },
     methods: {
         select() {
+            if (!this.canSelect) return
+
             let raw = window.getSelection()!.toString()
             if (raw === '') this.text = ''
             else this.text = window.getSelection()!
@@ -53,9 +57,38 @@ export default defineComponent({
                     this.article.author = this.text
                     break
                 case 2:
-                    this.text = this.text.replace(/[^\.]([^.]*)$/, '')
+                    this.text = this.text
                     this.article.description = this.text
                     break
+            }
+        },
+        // @ts-ignore
+        mousedown(e) {
+            this.canSelect = e?.target?.tagName === 'SPAN'
+
+            if (e.button === 2) {
+                this.state = (this.state - 1) % 3
+                if (this.state < 0) this.state = 2
+                this.$emit('switchSmartInput', this.state)
+            }
+
+            if (this.text !== '') this.nextState()
+
+            if (e?.target?.tagName === 'INPUT' || e?.target?.tagName === 'TEXTAREA') {
+                switch (e?.target?.id) {
+                    case 'title':
+                        this.state = 0
+                        break
+                    case 'author':
+                        this.state = 1
+                        break
+                    case 'description':
+                        this.state = 2
+                        break
+                }
+                this.$emit('switchSmartInput', this.state)
+            } else {
+                window.getSelection()?.removeAllRanges()
             }
         },
         // @ts-ignore
@@ -64,23 +97,13 @@ export default defineComponent({
             el!.style.left = e.pageX + 30 + 'px'
             el!.style.top = e.pageY - 90 + 'px'
         },
-        // @ts-ignore
-        mouseup(e) {
-            if (e.button === 2) {
-                this.state = (this.state - 1) % 3
-                if (this.state < 0) this.state = 2
-            }
-            if (this.text !== '') this.nextState()
-            if (e?.target?.tagName !== 'INPUT' && e?.target?.tagName !== 'TEXTAREA') {
-                window.getSelection()?.removeAllRanges()
-            }
-        },
         nextState() {
             this.state++
             if (this.state >= 3) {
                 this.state = 0
                 this.$emit('submit')
             }
+            this.$emit('switchSmartInput', this.state)
         }
     }
 })

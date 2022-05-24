@@ -1,11 +1,12 @@
 <template>
     <div class="container">
-        <input type="text" id="title" class="primary" placeholder="Article Title" v-model="article.title">
-        <input type="text" id="author" class="primary" placeholder="Article Authors (Alan Bennings & Charles Doyle)"
-            v-model="article.author">
+        <input type="text" id="title" class="primary" :class="{ 'smart-input': smartInputSelection === 0 }"
+            placeholder="Article Title" v-model="article.title">
+        <input type="text" id="author" class="primary" :class="{ 'smart-input': smartInputSelection === 1 }"
+            placeholder=" Article Authors (Alan Bennings & Charles Doyle)" v-model="article.author">
         <input type="text" id="publisher" class="primary" placeholder="Article Publisher" v-model="article.publisher" />
-        <textarea type="text" id="description" class="primary" placeholder="Article description"
-            v-model="article.description" />
+        <textarea type="text" id="description" class="primary" :class="{ 'smart-input': smartInputSelection === 2 }"
+            placeholder="Article description" v-model="article.description" />
         <div class="flex">
             <select v-model="file">
                 <option :value="{}" disabled selected hidden>Select File</option>
@@ -27,11 +28,11 @@
                 <span v-else-if="status === 'error'">Failed!</span>
             </button>
         </div>
-        <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${file.path}`"
+        <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
             :page="article.page"
             style="width: 40rem; box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2); margin-left: 0.5rem;" class="scroll"
             ref="pdf" @rendered="rendered" />
-        <ArticleSmartInput :article="article" @submit="submit" />
+        <ArticleSmartInput :article="article" @submit="submit" @switchSmartInput="switchSmartInput" />
     </div>
 </template>
 
@@ -55,7 +56,8 @@ export default defineComponent({
             article: {} as Article,
             file: {} as File,
             status: "standby" as Status,
-            maxPage: 1
+            maxPage: 1,
+            smartInputSelection: 0
         };
     },
     methods: {
@@ -71,6 +73,9 @@ export default defineComponent({
         rendered() {
             // @ts-ignore
             this.maxPage = this.$refs.pdf.pageCount || 1
+        },
+        switchSmartInput(n: number) {
+            this.smartInputSelection = n
         }
     },
     mounted() {
@@ -129,5 +134,9 @@ input#title {
 textarea#description {
     font-size: 1.2rem;
     min-height: 3em;
+}
+
+.smart-input {
+    outline: 2px solid rgb(0, 90, 164) !important;
 }
 </style>

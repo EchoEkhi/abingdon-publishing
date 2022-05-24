@@ -20,11 +20,11 @@
         </div>
 
     </div>
-    <div class="flex" style="height: 85vh;">
+    <FileEdit />
+    <div class="flex" style="height: 100vh;">
         <ArticleList class="left" />
         <ArticleEdit class="right" />
     </div>
-    <FileEdit />
     <PreviewFrame />
 </template>
 

@@ -10,7 +10,7 @@
 
         <input type="file" ref="file">
         <button :disabled="file.name === '' || file.name === undefined" @click="submit">
-            <span v-if="status === 'standby'">{{ file.id === -1 ? 'Create' : 'Save' }} File</span>
+            <span v-if="status === 'standby'">{{ file.id === -1 ? 'Upload' : 'Save' }} File</span>
             <span v-else-if="status === 'waiting'">Saving File...</span>
             <span v-else-if="status === 'success'">File Saved!</span>
             <span v-else-if="status === 'error'">Failed!</span>
