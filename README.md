@@ -1,5 +1,11 @@
 # Abingdon Publishing Widget
 
+## Dear person who tried to hack our production deployment through TOR network:
+
+Perhaps there was a reason the admin password in the dev database was called `change-me`?
+
+Just FYI, all the real passwords on production are UUIDs. Have fun. 
+
 ![Screenshot on Firefly](https://github.com/EchoEkhi/abingdon-publishing/blob/master/Firefly_Screenshot.jpg?raw=true)
 
 A widget to be put onto the side of Firefly Learning Platform. Provides descriptions and links to article PDFs to potentially interested readers.
