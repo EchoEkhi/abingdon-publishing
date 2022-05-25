@@ -8,11 +8,12 @@
         <textarea type="text" id="description" class="primary" :class="{ 'smart-input': smartInputSelection === 2 }"
             placeholder="Article description" v-model="article.description" />
         <div class="flex">
-            <select v-model="file">
-                <option :value="{}" disabled selected hidden>Select File</option>
+            <select v-model="file" @input="PDFLoading = true; article.page = 1">
+                <option :value="{}" disabled selected hidden>Select a file to show a preview</option>
                 <option v-for="file in files" :value="file">{{ file.name }}</option>
             </select>
-            <input type="number" min="1" :max="maxPage" placeholder="Page number" v-model="article.page">
+            <input style="width: 15rem" type="number" min="1" :max="maxPage"
+                placeholder="Starting page number of the article" v-model="article.page">
             <button style="width: 2rem; margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;"
                 :disabled="article.page <= 1" @click="() => { article.page-- }">
                 ◀
@@ -28,10 +29,15 @@
                 <span v-else-if="status === 'error'">Failed!</span>
             </button>
         </div>
-        <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
-            :page="article.page"
-            style="width: 40rem; box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2); margin-left: 0.5rem;" class="scroll"
-            ref="pdf" @rendered="rendered" />
+        <div style="width: 40rem; box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.2); margin-left: 0.5rem;">
+            <div v-if="PDFLoading"
+                style="background-color: white; height: 100vh; text-align: center; padding-top: 2rem;">
+                <h1>Loading PDF...</h1>
+            </div>
+            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
+                :page="article.page" class="scroll" :style="{ 'opacity': PDFLoading ? '0' : '1' }" ref="pdf"
+                @rendered="rendered" />
+        </div>
         <ArticleSmartInput :article="article" @submit="submit" @switchSmartInput="switchSmartInput" />
     </div>
 </template>
@@ -57,7 +63,8 @@ export default defineComponent({
             file: {} as File,
             status: "standby" as Status,
             maxPage: 1,
-            smartInputSelection: 0
+            smartInputSelection: 0,
+            PDFLoading: false
         };
     },
     methods: {
@@ -73,6 +80,7 @@ export default defineComponent({
         rendered() {
             // @ts-ignore
             this.maxPage = this.$refs.pdf.pageCount || 1
+            this.PDFLoading = false
         },
         switchSmartInput(n: number) {
             this.smartInputSelection = n

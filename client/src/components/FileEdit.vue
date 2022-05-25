@@ -1,14 +1,14 @@
 <template>
     <div class="container flex">
+        <h1 style="margin-top: 0.5rem; margin-bottom: 1rem; margin-left: 0.5rem">Upload Your PDF</h1>
         <select v-model="file">
             <option :value="newFile">Upload new file</option>
             <option v-for="file in files" :value="file">{{ file.name }}</option>
         </select>
+        <input type="file" ref="file">
         <input type="text" placeholder="File name e.g. The Martlet Issue 29" v-model="file.name">
         <input type="text" placeholder="File link" disabled
             :value="file.name ? 'Link: ' + file.name.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.pdf' : ''">
-
-        <input type="file" ref="file">
         <button :disabled="file.name === '' || file.name === undefined" @click="submit">
             <span v-if="status === 'standby'">{{ file.id === -1 ? 'Upload' : 'Save' }} File</span>
             <span v-else-if="status === 'waiting'">Saving File...</span>
