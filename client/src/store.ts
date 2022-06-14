@@ -29,6 +29,21 @@ function getPublisher() {
     }
 }
 
+function animateNewArticle() {
+    requestAnimationFrame(() => {
+        // @ts-ignore
+        document.getElementById('new-article').classList.remove('new-article-during')
+        // @ts-ignore
+        document.getElementById('new-article').classList.replace('new-article-after', 'new-article-before')
+        requestAnimationFrame(() => {
+            // @ts-ignore
+            document.getElementById('new-article').classList.add('new-article-during')
+            // @ts-ignore
+            requestAnimationFrame(() => document.getElementById('new-article').classList.replace('new-article-before', 'new-article-after'))
+        })
+    })
+}
+
 export const useArticles = defineStore('articles', {
     state: () => ({
         articles: [] as Article[],
@@ -56,6 +71,7 @@ export const useArticles = defineStore('articles', {
                 this.newArticle.title = 'Create New Article'
                 this.newArticle.author = ''
                 this.newArticle.description = ''
+                animateNewArticle()
             })
             return this.newArticle
         },

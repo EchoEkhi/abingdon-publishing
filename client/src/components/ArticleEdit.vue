@@ -3,7 +3,7 @@
         <input type="text" id="title" class="primary" :class="{ 'smart-input': smartInputSelection === 0 }"
             placeholder="Article Title" v-model="article.title">
         <input type="text" id="author" class="primary" :class="{ 'smart-input': smartInputSelection === 1 }"
-            placeholder=" Article Authors (Alan Bennings & Charles Doyle)" v-model="article.author">
+            placeholder=" Article Authors" v-model="article.author">
         <input type="text" id="publisher" class="primary" placeholder="Article Publisher" v-model="article.publisher" />
         <textarea type="text" id="description" class="primary" :class="{ 'smart-input': smartInputSelection === 2 }"
             placeholder="Article description" v-model="article.description" />

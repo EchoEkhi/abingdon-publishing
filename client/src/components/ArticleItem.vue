@@ -10,7 +10,8 @@
             <p class="description">{{ article.description }}</p>
         </div>
         <transition>
-            <div v-show="showCheckbox" class="tickbox" @click="article.selected = !article.selected">
+            <div v-show="showCheckbox" class="tickbox" :class="{ selected: article.selected }"
+                @click="article.selected = !article.selected">
                 <input type="checkbox" v-model="article.selected">
             </div>
         </transition>
@@ -127,7 +128,11 @@ export default defineComponent({
     right: 0;
     z-index: 5;
     display: flex;
-    background: linear-gradient(90deg, #11111100 0%, #555555FF 100%);
+    background: linear-gradient(90deg, #11111100 0%, rgb(0, 90, 164) 100%);
+}
+
+.tickbox.selected {
+    background: linear-gradient(90deg, #11111100 0%, rgb(150, 0, 0) 100%);
 }
 
 .tickbox input {
