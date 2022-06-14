@@ -38,6 +38,22 @@ export default defineComponent({
         document.removeEventListener('contextmenu', event => event.preventDefault())
     },
     methods: {
+        loadText() {
+            switch (this.state) {
+                case 0:
+                    // @ts-ignore
+                    this.text = this.article.title
+                    break
+                case 1:
+                    // @ts-ignore
+                    this.text = this.article.author
+                    break
+                case 2:
+                    // @ts-ignore
+                    this.text = this.article.description
+                    break
+            }
+        },
         select() {
             if (!this.canSelect) return
 
@@ -71,6 +87,7 @@ export default defineComponent({
             if (e.button === 2) {
                 this.state = (this.state - 1) % 3
                 if (this.state < 0) this.state = 2
+                this.loadText()
                 this.$emit('switchSmartInput', this.state)
             }
 
@@ -106,6 +123,7 @@ export default defineComponent({
                 this.state = 0
                 this.$emit('submit')
             }
+            this.loadText()
             this.$emit('switchSmartInput', this.state)
         }
     }
