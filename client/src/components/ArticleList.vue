@@ -85,16 +85,17 @@ export default defineComponent({
 
 .new-article-before {
     min-height: 0;
-    height: 0rem;
+    top: -6rem;
+    margin-bottom: -6rem;
 }
 
 .new-article-during {
-    transition: height 0.5s ease;
+    transition: top 0.5s ease, margin-bottom 0.5s ease;
 }
 
 .new-article-after {
     min-height: 0;
-    height: 6rem;
+    top: 0rem;
 }
 
 .menu {
