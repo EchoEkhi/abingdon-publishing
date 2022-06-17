@@ -12,6 +12,7 @@ export type Article = {
     publisher: string,
     file_id: number,
     page: number,
+    modified: boolean | undefined,
     selected: boolean | undefined
 }
 

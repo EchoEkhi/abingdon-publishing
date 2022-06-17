@@ -1,5 +1,5 @@
 <template>
-    <div style="position: absolute;" id="article-smart-input" class="tooltip">
+    <div v-show="onPDF" style="position: absolute;" id="article-smart-input" class="tooltip">
         <p style="margin-bottom: 0.5rem">
             Smart input is active. Right click to redo last field.
         </p>
@@ -20,7 +20,7 @@ export default defineComponent({
         return {
             text: '',
             state: 0,
-            canSelect: false
+            onPDF: false
         }
     },
     mounted() {
@@ -55,7 +55,7 @@ export default defineComponent({
             }
         },
         select() {
-            if (!this.canSelect) return
+            if (!this.onPDF) return
 
             let raw = window.getSelection()!.toString()
             if (raw === '') this.text = ''
@@ -82,15 +82,6 @@ export default defineComponent({
         },
         // @ts-ignore
         mousedown(e) {
-            this.canSelect = e?.target?.tagName === 'SPAN'
-
-            if (e.button === 2) {
-                this.state = (this.state - 1) % 3
-                if (this.state < 0) this.state = 2
-                this.loadText()
-                this.$emit('switchSmartInput', this.state)
-            }
-
             if (e?.target?.tagName === 'INPUT' || e?.target?.tagName === 'TEXTAREA') {
                 switch (e?.target?.id) {
                     case 'title':
@@ -108,14 +99,25 @@ export default defineComponent({
                 window.getSelection()?.removeAllRanges()
             }
         },
-        mouseup() {
-            if (this.canSelect && this.text !== '') this.nextState()
+        // @ts-ignore
+        mouseup(e) {
+            if (!this.onPDF) return
+
+            if (e.button === 0 && this.text !== '') this.nextState()
+            else if (e.button === 2) {
+                this.state = (this.state - 1) % 3
+                if (this.state < 0) this.state = 2
+                this.loadText()
+                this.$emit('switchSmartInput', this.state)
+            }
         },
         // @ts-ignore
         mousemove(e) {
             let el = document.getElementById('article-smart-input')
             el!.style.left = e.pageX + 30 + 'px'
             el!.style.top = e.pageY - 90 + 'px'
+
+            this.onPDF = e.target.closest('.vue-pdf-embed') !== null
         },
         nextState() {
             this.state++
@@ -125,6 +127,7 @@ export default defineComponent({
             }
             this.loadText()
             this.$emit('switchSmartInput', this.state)
+            window.getSelection()?.removeAllRanges()
         }
     }
 })

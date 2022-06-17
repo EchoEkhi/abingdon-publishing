@@ -3,7 +3,7 @@
         <input type="text" id="title" class="primary" :class="{ 'smart-input': smartInputSelection === 0 }"
             placeholder="Article Title" v-model="article.title">
         <input type="text" id="author" class="primary" :class="{ 'smart-input': smartInputSelection === 1 }"
-            placeholder=" Article Authors" v-model="article.author">
+            placeholder="Article Authors" v-model="article.author">
         <input type="text" id="publisher" class="primary" placeholder="Article Publisher" v-model="article.publisher" />
         <textarea type="text" id="description" class="primary" :class="{ 'smart-input': smartInputSelection === 2 }"
             placeholder="Article description" v-model="article.description" />
@@ -60,6 +60,7 @@ export default defineComponent({
     data() {
         return {
             article: {} as Article,
+            oldArticle: {} as Article,
             file: {} as File,
             status: "standby" as Status,
             maxPage: 1,
@@ -72,8 +73,10 @@ export default defineComponent({
             this.status = "waiting";
             await useArticles().submitArticle(this.article)
                 .then(article => {
-                    this.status = "success"
                     this.article = article
+                    this.oldArticle = { ...article }
+                    this.article.modified = false
+                    this.status = "success"
                 })
                 .catch(() => this.status = "error")
         },
@@ -90,13 +93,29 @@ export default defineComponent({
         this.article = this.newArticle;
         emitter.on("selectArticle", article => {
             this.article = article
+            this.oldArticle = { ...article }
+            if (this.article.id === -1) {
+                this.article.modified = true
+            }
             this.file = this.files?.find(file => file.id === article.file_id) || {} as File
         })
     },
     watch: {
         article: {
             handler() {
-                this.status = "standby"
+                // determine of the article is modified by checking a reference object
+                if (!this.article.modified) {
+                    this.article.modified = (
+                        this.article.title !== this.oldArticle.title ||
+                        this.article.publisher !== this.oldArticle.publisher ||
+                        this.article.author !== this.oldArticle.author ||
+                        this.article.description !== this.oldArticle.description ||
+                        this.article.file_id !== this.oldArticle.file_id ||
+                        this.article.page !== this.oldArticle.page
+                    )
+                }
+
+                if (this.article.modified) this.status = "standby"
             },
             deep: true
         },

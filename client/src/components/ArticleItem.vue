@@ -5,6 +5,7 @@
                 <span class="author">{{ article.author }}</span>
                 <span v-if="article.author && article.publisher"> - </span>
                 <span class="publisher">{{ article.publisher }}</span>
+                <span v-if="article.modified" class="modified"> - Not Saved</span>
             </div>
             <p class="title">{{ article.title }}</p>
             <p class="description">{{ article.description }}</p>
@@ -101,6 +102,10 @@ export default defineComponent({
     font-size: 0.6rem;
     text-transform: uppercase;
     margin-bottom: 0;
+}
+
+.article .modified {
+    color: red
 }
 
 .article .title {
