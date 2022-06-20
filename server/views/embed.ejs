@@ -7,7 +7,9 @@
     <% for (let article of articles) { %>
     <div class="article">
         <p class="breadcrumb">
-            <span class="featured">FEATURED</span>
+            <% if (article.featured) { %>
+                <span class="featured">FEATURED</span>
+            <% } %> 
             <%= (article.featured && (article.author || article.publisher)) ? ' - ' : '' %>
             <span class="author">
                 <%= article.author %>
