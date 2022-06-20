@@ -79,7 +79,7 @@ app.post('/update/:id', async (req, res) => {
             description: new_article.description,
             file_id: new_article.file_id,
             page: new_article.page,
-            featured: article.featured
+            featured: new_article.featured
         }
     }).catch(() => res.status(400).send())
 
