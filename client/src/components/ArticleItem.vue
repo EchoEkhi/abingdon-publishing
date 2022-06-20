@@ -2,6 +2,8 @@
     <div class="article" :class="{ selected }">
         <div @click="selectArticle">
             <div class="breadcrumb">
+                <span v-if="article.featured" class="featured">FEATURED</span>
+                <span v-if="article.featured && (article.author || article.publisher)"> - </span>
                 <span class="author">{{ article.author }}</span>
                 <span v-if="article.author && article.publisher"> - </span>
                 <span class="publisher">{{ article.publisher }}</span>
@@ -96,6 +98,11 @@ export default defineComponent({
     padding-top: 0.5rem;
     font-size: 0.6rem;
     color: #888;
+}
+
+.article .featured {
+    color: #d64385;
+    font-weight: bold;
 }
 
 .article .publisher {

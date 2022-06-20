@@ -13,7 +13,8 @@ export type Article = {
     file_id: number,
     page: number,
     modified: boolean | undefined,
-    selected: boolean | undefined
+    selected: boolean | undefined,
+    featured: boolean
 }
 
 type Events = {

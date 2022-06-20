@@ -19,10 +19,9 @@
                     This
                     action is reversible upon request.
                 </p>
-                <p>If you are unsure about anything, please do not hesitate to contact me at <a
-                        href="/api/support-email">my
-                        email
-                        address</a>!</p>
+                <p>If you are unsure about anything, please do not hesitate to contact me at
+                    <a href="/api/support-email">my email address</a>!
+                </p>
             </div>
         </div>
         <FileEdit style="min-width: 25%" />

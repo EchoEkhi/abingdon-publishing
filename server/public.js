@@ -37,6 +37,7 @@ app.get('/embed', async (req, res) => {
             publisher: true,
             description: true,
             page: true,
+            featured: true,
             file: {
                 select: {
                     path: true

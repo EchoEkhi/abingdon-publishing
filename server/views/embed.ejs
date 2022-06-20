@@ -7,6 +7,8 @@
     <% for (let article of articles) { %>
     <div class="article">
         <p class="breadcrumb">
+            <span class="featured">FEATURED</span>
+            <%= (article.featured && (article.author || article.publisher)) ? ' - ' : '' %>
             <span class="author">
                 <%= article.author %>
             </span>
@@ -103,6 +105,11 @@
         font-size: 0.6rem;
         color: #888;
         overflow: hidden;
+    }
+
+    .article .featured {
+        color: #d64385;
+        font-weight: bold;
     }
 
     .article .publisher {

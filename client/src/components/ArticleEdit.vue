@@ -22,6 +22,8 @@
                 :disabled="article.page >= maxPage" @click="() => { article.page++ }">
                 ▶
             </button>
+            <input type="checkbox" name="Featured" id="featured" v-model="article.featured">
+            <label for="featured">Featured</label>
             <button :disabled="article.title === ''" @click="submit">
                 <span v-if="status === 'standby'">{{ article.id === -1 ? 'Create' : 'Save' }} Article</span>
                 <span v-else-if="status === 'waiting'">{{ article.id === -1 ? 'Creating' : 'Saving' }} Article...</span>
@@ -34,7 +36,7 @@
                 style="background-color: white; height: 100vh; text-align: center; padding-top: 2rem;">
                 <h1>Loading PDF...</h1>
             </div>
-            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
+            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${file.path}`"
                 :page="article.page" class="scroll" :style="{ 'opacity': PDFLoading ? '0' : '1' }" ref="pdf"
                 @rendered="rendered" />
         </div>
@@ -111,7 +113,8 @@ export default defineComponent({
                         this.article.author !== this.oldArticle.author ||
                         this.article.description !== this.oldArticle.description ||
                         this.article.file_id !== this.oldArticle.file_id ||
-                        this.article.page !== this.oldArticle.page
+                        this.article.page !== this.oldArticle.page ||
+                        this.article.featured !== this.oldArticle.featured
                     )
                 }
 

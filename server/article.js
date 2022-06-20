@@ -19,6 +19,7 @@ app.post('/create', async (req, res) => {
             file_id: article.file_id,
             page: article.page,
             user_id: req.user.id,
+            featured: article.featured,
             published_date: new Date().toISOString()
         }
     })
@@ -77,7 +78,8 @@ app.post('/update/:id', async (req, res) => {
             author: new_article.author,
             description: new_article.description,
             file_id: new_article.file_id,
-            page: new_article.page
+            page: new_article.page,
+            featured: article.featured
         }
     }).catch(() => res.status(400).send())
 
