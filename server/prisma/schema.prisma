@@ -22,6 +22,7 @@ model article {
   page           Int?
   hidden         Boolean? @default(false)
   hide_session   String?
+  featured       Boolean? @default(false)
   file           file?    @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user           user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
