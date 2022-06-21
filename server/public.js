@@ -20,7 +20,7 @@ app.get('/file/:path', async (req, res) => {
 
     res.status(200).send(Buffer.from(file.file))
 
-    log.info(`[public/file] ${req.params.path} accessed`)
+    log.info(`[public/file] ${ req.params.path } accessed`)
 
 })
 
@@ -47,6 +47,9 @@ app.get('/embed', async (req, res) => {
         where: {
             showing: true,
             hidden: false
+        },
+        orderBy: {
+            featured: 'DESC'
         }
     })
 
@@ -88,9 +91,9 @@ app.get('/publisher/:name', async (req, res) => {
 
     if (file === null || file[0].path === null) return res.status(400).send()
 
-    res.redirect(`/api/public/file/${file[0].path}`)
+    res.redirect(`/api/public/file/${ file[0].path }`)
 
-    log.info(`[public/publisher] ${req.params.name} accessed`)
+    log.info(`[public/publisher] ${ req.params.name } accessed`)
 
 })
 
