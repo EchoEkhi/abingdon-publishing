@@ -49,7 +49,7 @@ app.get('/embed', async (req, res) => {
             hidden: false
         },
         orderBy: {
-            featured: 'DESC'
+            featured: 'ASC'
         }
     })
 
