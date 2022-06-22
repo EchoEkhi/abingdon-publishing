@@ -47,9 +47,6 @@ app.get('/embed', async (req, res) => {
         where: {
             showing: true,
             hidden: false
-        },
-        orderBy: {
-            featured: 'asc'
         }
     })
 
