@@ -9,6 +9,7 @@ export type Article = {
     title: string,
     author: string,
     description: string,
+    description_html: string,
     publisher: string,
     file_id: number,
     page: number,

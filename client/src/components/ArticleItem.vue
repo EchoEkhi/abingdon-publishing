@@ -10,7 +10,8 @@
                 <span v-if="article.modified" class="modified"> - Not Saved</span>
             </div>
             <p class="title">{{ article.title }}</p>
-            <p class="description">{{ article.description }}</p>
+            <div v-if="article.description_html" v-html="article.description_html"></div>
+            <p v-else class="description">{{ article.description }}</p>
         </div>
         <transition>
             <div v-show="showCheckbox" class="tickbox" :class="{ selected: article.selected }"

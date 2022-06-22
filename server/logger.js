@@ -4,7 +4,7 @@ require('winston-daily-rotate-file')
 const log = winston.createLogger({
     format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.printf(({ level, message, timestamp }) => `[${level}]\t[${timestamp}]\t${message}`)
+        winston.format.printf(({ level, message, timestamp }) => `[${ level }]\t[${ timestamp }]\t${ message }`)
     ),
     transports: [
         new winston.transports.File({ filename: __dirname + '/logs/error.log', level: 'error' }),
@@ -15,6 +15,9 @@ const log = winston.createLogger({
             datePattern: 'YYYY-MM-DD',
             maxFiles: '7d'
         })
+    ],
+    exceptionHandlers: [
+        new winston.transports.File({ filename: __dirname + '/logs/exceptions.log' })
     ]
 })
 

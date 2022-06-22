@@ -5,8 +5,12 @@
         <input type="text" id="author" class="primary" :class="{ 'smart-input': smartInputSelection === 1 }"
             placeholder="Article Authors" v-model="article.author">
         <input type="text" id="publisher" class="primary" placeholder="Article Publisher" v-model="article.publisher" />
-        <textarea type="text" id="description" class="primary" :class="{ 'smart-input': smartInputSelection === 2 }"
-            placeholder="Article description" v-model="article.description" />
+        <textarea v-if="article.description_html" type="text" id="description" class="primary"
+            :class="{ 'smart-input': smartInputSelection === 2 }" placeholder="Article description HTML"
+            v-model="article.description_html" />
+        <textarea v-else type="text" id="description" class="primary"
+            :class="{ 'smart-input': smartInputSelection === 2 }" placeholder="Article description"
+            v-model="article.description" />
         <div class="flex">
             <select v-model="file" @input="PDFLoading = true; article.page = 1">
                 <option :value="{}" disabled selected hidden>Select a file to show a preview</option>
@@ -36,7 +40,7 @@
                 style="background-color: white; height: 100vh; text-align: center; padding-top: 2rem;">
                 <h1>Loading PDF...</h1>
             </div>
-            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${file.path}`"
+            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
                 :page="article.page" class="scroll" :style="{ 'opacity': PDFLoading ? '0' : '1' }" ref="pdf"
                 @rendered="rendered" />
         </div>

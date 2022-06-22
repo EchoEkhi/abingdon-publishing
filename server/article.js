@@ -26,7 +26,7 @@ app.post('/create', async (req, res) => {
 
     res.status(200).send(article)
 
-    log.info(`[article/create] ${req.user.publisher} created ${article.title}`)
+    log.info(`[article/create] ${ req.user.publisher } created ${ article.title }`)
 
 })
 
@@ -46,7 +46,7 @@ app.get('/read', async (req, res) => {
 
     res.send(articles)
 
-    log.info(`[article/read] ${req.user.publisher} read article list`)
+    log.info(`[article/read] ${ req.user.publisher } read article list`)
 
 })
 
@@ -69,6 +69,8 @@ app.post('/update/:id', async (req, res) => {
 
     if (!req.user.isAdmin && article.user_id !== req.user.id) return res.status(400).send()
 
+    if (!req.user.isAdmin) new_article.publisher = req.user.publisher
+
     await db.article.update({
         where: {
             id
@@ -76,6 +78,7 @@ app.post('/update/:id', async (req, res) => {
         data: {
             title: new_article.title,
             author: new_article.author,
+            publisher: new_article.publisher,
             description: new_article.description,
             file_id: new_article.file_id,
             page: new_article.page,
@@ -85,7 +88,7 @@ app.post('/update/:id', async (req, res) => {
 
     res.status(200).send()
 
-    log.info(`[article/update] ${req.user.publisher} updated ${new_article.title}`)
+    log.info(`[article/update] ${ req.user.publisher } updated ${ new_article.title }`)
 
 })
 
@@ -113,7 +116,7 @@ app.post('/hide', async (req, res) => {
 
         res.status(200).send()
 
-        log.info(`[article/hide] ${req.user.publisher} hid ${req.body.ids} in session ${hide_session}`)
+        log.info(`[article/hide] ${ req.user.publisher } hid ${ req.body.ids } in session ${ hide_session }`)
 
     } catch {
         res.status(400).send()
@@ -134,7 +137,7 @@ app.get('/undo-hide/:session', async (req, res) => {
 
         res.status(200).send('Undo success.')
 
-        log.info(`[article/undo_hide] ${req.user.publisher} undid hide session ${req.params.session}`)
+        log.info(`[article/undo_hide] ${ req.user.publisher } undid hide session ${ req.params.session }`)
 
     } catch {
         res.status(400).send('Undo failed.')

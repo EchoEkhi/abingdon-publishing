@@ -8,23 +8,24 @@ datasource db {
 }
 
 model article {
-  id             Int      @id @default(autoincrement())
-  title          String
-  author         String?
-  publisher      String?
-  description    String?
-  published_date DateTime
-  showing        Boolean  @default(false)
-  exposures      Int      @default(0)
-  clicks         Int      @default(0)
-  user_id        Int
-  file_id        Int?
-  page           Int?
-  hidden         Boolean? @default(false)
-  hide_session   String?
-  featured       Boolean? @default(false)
-  file           file?    @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user           user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id               Int      @id @default(autoincrement())
+  title            String
+  author           String?
+  publisher        String?
+  description      String?
+  description_html String?
+  published_date   DateTime
+  showing          Boolean  @default(false)
+  exposures        Int      @default(0)
+  clicks           Int      @default(0)
+  user_id          Int
+  file_id          Int?
+  page             Int?
+  hidden           Boolean? @default(false)
+  hide_session     String?
+  featured         Boolean? @default(false)
+  file             file?    @relation(fields: [file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user             user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model file {

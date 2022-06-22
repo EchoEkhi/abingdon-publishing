@@ -8,8 +8,8 @@
     <div class="article">
         <p class="breadcrumb">
             <% if (article.featured) { %>
-                <span class="featured">FEATURED</span>
-            <% } %> 
+            <span class="featured">FEATURED</span>
+            <% } %>
             <%= (article.featured && (article.author || article.publisher)) ? ' - ' : '' %>
             <span class="author">
                 <%= article.author %>
@@ -22,9 +22,13 @@
         <a href="/api/public/file/<%= article.file.path %>#page=<%= article.page %>" target="_blank" class="title">
             <%= article.title %>
         </a>
+        <% if (article.description_html) { %>
+        <%- article.description_html %>
+        <% } else { %>
         <p class="description">
             <%= article.description %>
         </p>
+        <% } %>
     </div>
     <% } %>
     <div class="footer">

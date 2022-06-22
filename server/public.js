@@ -36,6 +36,7 @@ app.get('/embed', async (req, res) => {
             author: true,
             publisher: true,
             description: true,
+            description_html: true,
             page: true,
             featured: true,
             file: {
