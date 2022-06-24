@@ -40,9 +40,10 @@
                 style="background-color: white; height: 100vh; text-align: center; padding-top: 2rem;">
                 <h1>Loading PDF...</h1>
             </div>
-            <VuePdfEmbed v-if="file.path && article.page" :key="file.path" :source="`/api/public/file/${ file.path }`"
-                :page="article.page" class="scroll" :style="{ 'opacity': PDFLoading ? '0' : '1' }" ref="pdf"
-                @rendered="rendered" />
+            <div v-if="showPDF && file.path && article.page" :style="{ 'opacity': PDFLoading ? '0' : '1' }">
+                <VuePdfEmbed :source="`/api/public/file/${ file.path }`" :page="article.page" class="scroll" ref="pdf"
+                    @rendered="rendered" />
+            </div>
         </div>
         <ArticleSmartInput :article="article" @submit="submit" @switchSmartInput="switchSmartInput" />
     </div>
@@ -71,7 +72,8 @@ export default defineComponent({
             status: "standby" as Status,
             maxPage: 1,
             smartInputSelection: 0,
-            PDFLoading: false
+            PDFLoading: false,
+            showPDF: true
         };
     },
     methods: {
@@ -103,7 +105,15 @@ export default defineComponent({
             if (this.article.id === -1) {
                 this.article.modified = true
             }
+
+            // make PDF viewer work
             this.file = this.files?.find(file => file.id === article.file_id) || {} as File
+            this.PDFLoading = true
+            this.showPDF = false
+            setTimeout(() => {
+                this.showPDF = true
+                this.PDFLoading = false
+            }, 100)
         })
     },
     watch: {
