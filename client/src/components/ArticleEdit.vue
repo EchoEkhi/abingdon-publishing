@@ -107,13 +107,16 @@ export default defineComponent({
             }
 
             // make PDF viewer work
-            this.file = this.files?.find(file => file.id === article.file_id) || {} as File
-            this.PDFLoading = true
-            this.showPDF = false
-            setTimeout(() => {
-                this.showPDF = true
-                this.PDFLoading = false
-            }, 100)
+            let newFile = this.files?.find(file => file.id === article.file_id) || {} as File
+            if (this.file != newFile) {
+                this.file = newFile
+                this.PDFLoading = true
+                this.showPDF = false
+                setTimeout(() => {
+                    this.showPDF = true
+                    this.PDFLoading = false
+                }, 250)
+            }
         })
     },
     watch: {
