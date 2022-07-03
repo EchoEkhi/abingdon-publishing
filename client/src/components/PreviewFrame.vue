@@ -3,18 +3,3 @@
         <iframe src="/api/public/embed" frameborder="0" height="400" style="width: 100%;" />
     </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-    setup() {
-
-
-        return {}
-    }
-})
-</script>
-
-<style scoped>
-</style>

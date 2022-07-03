@@ -36,7 +36,7 @@ html {
     margin-inline: auto;
 }
 
-.container.error {
+.error {
     outline: red dashed 2px;
 }
 
@@ -98,4 +98,9 @@ input:hover {
 button:active,
 select:active {
     box-shadow: inset 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+    box-shadow: none;
+    background-color: transparent;
 }

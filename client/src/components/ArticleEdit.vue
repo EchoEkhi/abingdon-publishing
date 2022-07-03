@@ -11,6 +11,11 @@
         <textarea v-else type="text" id="description" class="primary"
             :class="{ 'smart-input': smartInputSelection === 2 }" placeholder="Article description"
             v-model="article.description" />
+        <transition appear>
+            <p class="message error" v-if="formValidationErrors.includes('description_min_length')">
+                Description must be longer than 30 characters.
+            </p>
+        </transition>
         <div class="flex">
             <select v-model="file" @input="PDFLoading = true; article.page = 1">
                 <option :value="{}" disabled selected hidden>Select a file to show a preview</option>
@@ -28,7 +33,7 @@
             </button>
             <input type="checkbox" name="Featured" id="featured" v-model="article.featured">
             <label for="featured">Featured</label>
-            <button :disabled="article.title === ''" @click="submit">
+            <button :disabled="article.title === '' || formValidationErrors.length !== 0" @click="submit">
                 <span v-if="status === 'standby'">{{ article.id === -1 ? 'Create' : 'Save' }} Article</span>
                 <span v-else-if="status === 'waiting'">{{ article.id === -1 ? 'Creating' : 'Saving' }} Article...</span>
                 <span v-else-if="status === 'success'">Article {{ article.id === -1 ? 'Created' : 'Saved' }}!</span>
@@ -52,7 +57,7 @@
 <script lang="ts">
 import { storeToRefs } from 'pinia'
 import { defineComponent } from 'vue'
-import { emitter, Article, useArticles, File, useFiles } from '../store'
+import { emitter, Article, useArticles, File, useFiles, getPublisher } from '../store'
 import ArticleSmartInput from './ArticleSmartInput.vue'
 import VuePdfEmbed from 'vue-pdf-embed'
 
@@ -73,11 +78,27 @@ export default defineComponent({
             maxPage: 1,
             smartInputSelection: 0,
             PDFLoading: false,
-            showPDF: true
+            showPDF: true,
+            formValidationErrors: [] as string[]
         };
     },
     methods: {
+        validate() {
+            this.formValidationErrors = []
+            // if the user is the admin, ignore all validation
+            if (getPublisher() === 'Admin') return true
+
+            // minimum character requirement for description: 30 chars
+            if (this.article.description.length < 30) {
+                this.formValidationErrors.push('description_min_length')
+            }
+
+            return this.formValidationErrors.length === 0
+        },
         async submit() {
+            // validate fields
+            if (!this.validate()) return
+
             this.status = "waiting";
             await useArticles().submitArticle(this.article)
                 .then(article => {
@@ -122,7 +143,7 @@ export default defineComponent({
     watch: {
         article: {
             handler() {
-                // determine of the article is modified by checking a reference object
+                // determine if the article is modified by checking a reference object
                 if (!this.article.modified) {
                     this.article.modified = (
                         this.article.title !== this.oldArticle.title ||
@@ -135,7 +156,10 @@ export default defineComponent({
                     )
                 }
 
-                if (this.article.modified) this.status = "standby"
+                if (this.article.modified) {
+                    this.formValidationErrors = []
+                    this.status = "standby"
+                }
             },
             deep: true
         },

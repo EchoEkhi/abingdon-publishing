@@ -24,7 +24,7 @@ type Events = {
 
 export const emitter = mitt<Events>();
 
-function getPublisher() {
+export function getPublisher() {
     try {
         return JSON.parse(atob(Cookies.get('auth')?.split('.')[1]!)).publisher
     } catch {
