@@ -13,7 +13,7 @@ app.get('/file/:path', async (req, res) => {
         }
     }).catch(() => res.status(400).send())
 
-    if (file === null) return res.status(400).send()
+    if (file.file === null) return res.status(400).send()
 
     res.set('content-type', 'application/pdf')
     res.set('Access-Control-Allow-Origin', '*')

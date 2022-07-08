@@ -4,7 +4,7 @@ import { router } from './routes'
 
 const api = axios.create({
     baseURL: '/api/',
-    timeout: 3000,
+    timeout: 10000,
     timeoutErrorMessage: 'Request timed out! Check your Internet.'
 })
 
