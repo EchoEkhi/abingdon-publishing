@@ -43,18 +43,21 @@ export default defineComponent({
             // @ts-ignore
             let { id } = await useFiles().submitFile(this.file)
 
-            this.status = 'success'
-
             if (id === undefined) id = this.file.id
             else this.file = this.files.find((file) => file.id === id) || this.file
             // @ts-ignore There does not seem to be a way to safely read files...
             const file = this.$refs.file.files[0]
 
-            if (file === undefined) return
+            if (file === undefined) {
+                this.status = 'success'
+                return
+            }
 
             let formData = new FormData()
             formData.append('file', file)
             await api.post('file/upload/' + id, formData)
+
+            this.status = 'success'
 
         }
     },
