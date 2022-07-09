@@ -68,7 +68,9 @@ export default defineComponent({
 .article {
     text-align: left;
     padding-inline: 1rem;
-    min-height: 6rem;
+    height: 5.5rem;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
     cursor: pointer;
     position: relative;
 }
